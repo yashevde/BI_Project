@@ -1,0 +1,10 @@
+# Created by .ignore support plugin (hsz.mobi)
+.idea/
+.idea/BI_Project.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/workspace.xml
+
+.ipynb_checkpoints
+user_logs
+.DS_Store
