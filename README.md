@@ -7,7 +7,7 @@ https://docs.google.com/document/d/1XgYfGj73pXdhoB0L45cvg357wp81NWqs8fMscOchQCg/
 * 
 
 ## Insights and thought process:
-Data Structure:
+**Data Structure:**
 * user_status.csv
 * user-n
     * device-n
@@ -15,16 +15,16 @@ Data Structure:
         * collated_contact_list.txt
         * collated_sms_log.txt
 
-Hypotheses:
+**Hypotheses:**
 
 * potential positively correlated variables to repayment:
     * number of 'transactional' texts (safaricom, mpesa, branch)
+        * M-PESA: high average balance
     * number of devices
     * number of contacts
-    * total number of phone calls made 
-    (indicates high (talk-time balance)|(tier of phone plan))
+    * total talk-time (collated_call_log.txt/"duration"--indicates high talk-time balance/tier of phone plan)
     
-Useful Parameters:
+**Useful Parameters:**
 
 * call logs:
     * duration
@@ -39,16 +39,17 @@ Useful Parameters:
     * n phone numbers each contact possess
         * with number of times contacted factored in == degree of communication with a richer person?
 
-Steps:
+**Steps:**
 - [] import csv and txts into pd.Dataframe. merge across devices (+count as a column); index by user.
-- [] only keep useful sms rows from collated_sms_log.txt (sms_address==MPESA,Safaricom, branch). 
-Basically, just non-numerical sms. Only recognized senders are labeled and pertinent.
+- [] Parse out info from (sms_address=="M-PESA","Safaricom", "Branch-co"). 
+- [] total duration of calls (sum call_log>duration)
+- [] Datetime handling for call and sms log to find day/night ratio of conversations
 
 ## Active time log:
 this will be useful in case I close the google doc while working on it, or keeping it open while not.
 All times in P.T.
 
-total: 
+**total: **
 
 * 04/20 06:00 - 
 
