@@ -21,6 +21,7 @@ https://docs.google.com/document/d/1XgYfGj73pXdhoB0L45cvg357wp81NWqs8fMscOchQCg/
     * number of 'transactional' texts (safaricom, mpesa, branch)
         * safaricom: fewer "depleted", "almost finished"
         * M-PESA: high average balance
+        * branch: number of loans and amount per
     * number of devices
     * number of contacts
     * total talk-time (collated_call_log.txt/"duration"--indicates high talk-time balance/tier of phone plan)
@@ -47,12 +48,12 @@ https://docs.google.com/document/d/1XgYfGj73pXdhoB0L45cvg357wp81NWqs8fMscOchQCg/
 - [] Datetime handling for call and sms log to find day/night ratio of conversations
 
 ## Active time log:
-this will be useful in case I close the google doc while working on it, or keeping it open while not.
+this will be useful in case I close the google doc while working on it, or keep it open while not.
 All times in P.T.
 
 **running total: 1.5hrs**
 
-* 04/20 06:00 - 7:10
+* 04/20 06:00 - 07:10
 
 Just realized that I've never had to crawl through subdirectories to build up the data. 
 
