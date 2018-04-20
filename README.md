@@ -19,6 +19,7 @@ https://docs.google.com/document/d/1XgYfGj73pXdhoB0L45cvg357wp81NWqs8fMscOchQCg/
 
 * potential positively correlated variables to repayment:
     * number of 'transactional' texts (safaricom, mpesa, branch)
+        * safaricom: fewer "depleted", "almost finished"
         * M-PESA: high average balance
     * number of devices
     * number of contacts
@@ -40,16 +41,16 @@ https://docs.google.com/document/d/1XgYfGj73pXdhoB0L45cvg357wp81NWqs8fMscOchQCg/
         * with number of times contacted factored in == degree of communication with a richer person?
 
 **Steps:**
-- [] import csv and txts into pd.Dataframe. merge across devices (+count as a column); index by user.
+- [] import csv and txts into pd.Dataframe. merge across devices (and count them per user); index by user.
 - [] Parse out info from (sms_address=="M-PESA","Safaricom", "Branch-co"). 
-- [] total duration of calls (sum call_log>duration)
+- [] total duration of calls = sum (call_log//duration per user)
 - [] Datetime handling for call and sms log to find day/night ratio of conversations
 
 ## Active time log:
 this will be useful in case I close the google doc while working on it, or keeping it open while not.
 All times in P.T.
 
-**total: **
+**total:**
 
 * 04/20 06:00 - 
 
