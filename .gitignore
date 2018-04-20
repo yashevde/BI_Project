@@ -4,7 +4,6 @@
 .idea/misc.xml
 .idea/modules.xml
 .idea/workspace.xml
-
+.DS_Store
 .ipynb_checkpoints
 user_logs
-.DS_Store
