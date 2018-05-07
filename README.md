@@ -9,8 +9,8 @@ https://docs.google.com/document/d/1XgYfGj73pXdhoB0L45cvg357wp81NWqs8fMscOchQCg/
 ## **Steps:**
 - [x] import csv and txts into pd.Dataframe. merge across devices (and count them per user); index by user.
 - [x] total duration of calls = sum (call_log//duration per user)
-- [] Parse out info from (sms_address=="MPESA","Safaricom", "Branch-co", "M-Shwari").
-- [x] Datetime handling for call and sms log
+- [] Parse out info from texts
+- [x] Datetime handling for call and sms logs
 - [] "network affluence" (number of calls to people with multiple lines i.e. more buying power/enterprise)
 - [] make master df. Split 80-20 into train and test.
 
@@ -22,7 +22,8 @@ All times in P.T.
 
 * 05/07 16:00-17:00
 
-error handling, talktime, call activity
+error handling, talktime, call activity, n_contacts
+resolving issues in assembling text for parsing: https://stackoverflow.com/a/46721064/8259724
 
 beginning final df assembly
 
@@ -40,19 +41,30 @@ importing, exploring and cleaning data
 
 setup, examining data files, establishing some workflow
 
-## **Hypotheses:**
+## Insights and thought process:
+**Hypotheses:**
 
 * potential positively correlated variables to repayment:
     * number of 'transactional' texts (safaricom, mpesa, branch, mshwari)
         * safaricom: fewer "depleted", "almost finished"
-        * M-PESA: high average balance
-        * branch: fewer loans and amount per
+        * M-PESA: : low(n_"failed"/n_"confirmed"), higher balance average ("account balance is")
+        * M-Shwari: loan amount
+        * Branch-co: fewer loans and lower "Your branch loan of" average
     * number of devices
     * number of contacts
     * total talk-time (collated_call_log.txt/"duration"--indicates high talk-time balance/tier of phone plan)
-    * higher day/night ratio of number of outgoing calls
+    * higher day/night ratio of number of outgoing calls/texts
+    * higher n_times contacted for contacts with multiple phone numbers (== affluent social/professional network?)
 
-## **Useful Parameters:**
+## **Data Structure:**
+* user_status.csv
+* user-n
+    * device-n
+        * collated_call_log.txt
+        * collated_contact_list.txt
+        * collated_sms_log.txt
+
+**Useful Parameters:**
 
 * call logs:
     * duration
@@ -60,21 +72,13 @@ setup, examining data files, establishing some workflow
 * sms log:
     * transactional messages number
     * transactional messages info
-        * MPESA: n_"failed"/n_"confirmed", balance average ("account balance is")
-        * M-Shwari: loan amount
-        * Safaricom: "depleted", "finished"
-        * Branch-co: "Your branch loan of" average
+        * MPESA
+        * M-Shwari
+        * Safaricom
+        * Branch-co
     * datetime
 * contacts list:
     * n contacts
-    * n phone numbers each contact possess
-        * with number of times contacted factored in == degree of communication with a richer network?
+    * n phone numbers per contact
+    * times contacted
 
-## Insights and thought process:
-**Data Structure:**
-* user_status.csv
-* user-n
-    * device-n
-        * collated_call_log.txt
-        * collated_contact_list.txt
-        * collated_sms_log.txt

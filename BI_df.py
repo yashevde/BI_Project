@@ -3,6 +3,7 @@ import pandas as pd
 import re
 import os
 import datetime
+import warnings
 
 working_dir = './user_logs_copy'
 
@@ -16,6 +17,7 @@ users = sorted(users, key=lambda item: int(item.partition('-')[2]))
 n_devices = []
 talkTime = []
 call_activity = []
+n_contacts = []
 # user 9 is a great reference. I user with >1 devices.
 for user in users:
     n_devices.append(len(next(os.walk(working_dir + '/' + user))[1]))
@@ -35,15 +37,15 @@ for user in users:
 
     for user_call_log in user_call_logs:
         try:
-            user_calls = pd.read_json(user_call_log) #,date_unit='ms', keep_default_dates=True
+            user_calls = pd.read_json(user_call_log)  # ,date_unit='ms',keep_default_dates=True
         except OverflowError:
             pass
 
-    #user talktime
-    talkTime.append((user_calls['duration'].sum())/3600)
+    # user talktime
+    talkTime.append((user_calls['duration'].sum()) / 3600)
 
-    # d/n ratio
-    d = 0
+    # d/n ratio -- outgoing vs. incoming?
+    d = 1
     n = 1
     for dt in user_calls['datetime']:
         dt = str(dt)
@@ -63,14 +65,23 @@ for user in users:
         user_texts = pd.read_json(user_text_log)
 
     # parse
+    # subset of df with just relevant rows
+    # warnings.simplefilter(action='ignore', category=FutureWarning) -- next line is pain point
+    # texts_df = user_texts[(user_texts.sms_address == 'MPESA') | (user_texts.sms_address == 'Branch-co') | (user_texts.sms_address == 'M-Shwari') | (user_texts.sms_address == 'Safaricom')]
+    # texts_df = texts_df['message_body']
+
+    # d/n ratio for texts as well?
 
     for user_contact_log in user_contact_logs:
         user_contacts = pd.read_json(user_contact_log)
 
     # n contacts
+    n_contacts.append(len(user_contacts))
     # contact "richness"
 
-    df = pd.DataFrame({'talkTime (hrs)': talkTime, 'n_devices': n_devices, 'call_activity (day/night)': call_activity})
-print(df)
+    df = pd.DataFrame({'talkTime (hrs)': talkTime, 'n_devices': n_devices, 'call (day/night)': call_activity,
+                       'n_contacts': n_contacts})
+
+# print(df)
 
 # master_df = concat user_dfs [user, repayed?, talktime, n_devices, n_contacts, d/n ratio, ...]
