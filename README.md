@@ -46,7 +46,7 @@ https://docs.google.com/document/d/1XgYfGj73pXdhoB0L45cvg357wp81NWqs8fMscOchQCg/
 - [x] import csv and txts into pd.Dataframe. merge across devices (and count them per user); index by user.
 - [x] total duration of calls = sum (call_log//duration per user)
 - [] Parse out info from (sms_address=="M-PESA","Safaricom", "Branch-co"). 
-- [] Datetime handling for call and sms log to find day/night ratio of conversations
+- [x] Datetime handling for call and sms log to find day/night ratio of conversations
 - [] degree of communication parameter (number of calls to people with multiple lines i.e. more buying power/enterprise)
 - [] make master df. Split 80-20 into train and test.
 
