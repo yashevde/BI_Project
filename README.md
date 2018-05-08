@@ -8,17 +8,24 @@ https://docs.google.com/document/d/1XgYfGj73pXdhoB0L45cvg357wp81NWqs8fMscOchQCg/
 
 ## **Steps:**
 - [x] import csv and txts into pd.Dataframe. merge across devices (and count them per user); index by user.
-- [x] total duration of calls = sum (call_log//duration per user)
-- [] Parse out info from texts
+- [x] feature engineering from parameters
 - [x] Datetime handling for call and sms logs
 - [] "network affluence" (number of calls to people with multiple lines i.e. more buying power/enterprise)
-- [] make master df. Split 80-20 into train and test.
+- [-] Parse out info from texts -- more: get MPESA Avg. Balance at least
+- [x] make master df. Split 80-20 into train and test.
+- []
 
 ## Active time log:
 this will be useful in case I close the google doc while working on it, or keep it open while not.
 All times in P.T.
 
-**running total: 3.5hrs**
+**running total: 4.5hrs**
+
+* 05/08 14:00 - 15:00
+
+text parsing, transaction success, some plots and correlation viz, train/test split
+
+staged for modeling
 
 * 05/07 16:00-17:00
 
@@ -42,6 +49,9 @@ importing, exploring and cleaning data
 setup, examining data files, establishing some workflow
 
 ## Insights and thought process:
+
+* Correlations aren't too strong, which indicates good feature engineering
+
 **Hypotheses:**
 
 * potential positively correlated variables to repayment:
