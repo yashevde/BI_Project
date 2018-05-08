@@ -3,17 +3,15 @@
 Instructions and Q&A:
 https://docs.google.com/document/d/1XgYfGj73pXdhoB0L45cvg357wp81NWqs8fMscOchQCg/edit
 
-## Observations and Inferences
-* 
-
 ## **Steps:**
 - [x] import csv and txts into pd.Dataframe. merge across devices (and count them per user); index by user.
 - [x] feature engineering from parameters
 - [x] Datetime handling for call and sms logs
-- [] "network affluence" (number of calls to people with multiple lines i.e. more buying power/enterprise)
+- [~] "network affluence" (number of calls to people with multiple lines i.e. more buying power/enterprise)
 - [-] Parse out info from texts -- more: get MPESA Avg. Balance at least
 - [x] make master df. Split 80-20 into train and test.
-- []
+- [] build and compare models, draw inferences
+- [] optimize BI_df.py to show some infrastructure swag
 
 ## Active time log:
 this will be useful in case I close the google doc while working on it, or keep it open while not.
@@ -25,7 +23,7 @@ All times in P.T.
 
 text parsing, transaction success, some plots and correlation viz, train/test split
 
-staged for modeling
+started prototyping for modeling with a basic skeleton for regression
 
 * 05/07 16:00-17:00
 
@@ -50,7 +48,7 @@ setup, examining data files, establishing some workflow
 
 ## Insights and thought process:
 
-* Correlations aren't too strong, which indicates good feature engineering
+* Correlations aren't too strong, which indicates good feature engineering. even and non-overlapping info content across the board.
 
 **Hypotheses:**
 
