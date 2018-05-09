@@ -7,11 +7,11 @@ https://docs.google.com/document/d/1XgYfGj73pXdhoB0L45cvg357wp81NWqs8fMscOchQCg/
 - [x] import csv and txts into pd.Dataframe. merge across devices (and count them per user); index by user.
 - [x] feature engineering from parameters
 - [x] Datetime handling for call and sms logs
-- [~] "network affluence" (number of calls to people with multiple lines i.e. more buying power/enterprise)
-- [-] Parse out info from texts -- expand.
 - [x] make master df. Split 80-20 into train and test.
+- [-] Parse out info from texts -- expand.
 - [] build and compare models, draw inferences
-- [] optimize BI_df.py to show some infrastructure swag
+- [] optimize BI_df.py
+- [~] degree assortativity for network
 
 ## Active time log:
 this will be useful in case I close the google doc while working on it, or keep it open while not.
@@ -59,6 +59,8 @@ setup, examining data files, establishing some workflow
 * transaction success is not positively correlated with defaulting --
 **resolved by better understanding the parsing with a word cloud**
 
+* branch features are quite strongly negatively correlated with status. MPESA is a better financial feature so far.
+
 **Hypotheses:**
 
 * potential positively correlated variables to repayment:
@@ -71,7 +73,7 @@ setup, examining data files, establishing some workflow
     * number of contacts
     * total talk-time (collated_call_log.txt/"duration"--indicates high talk-time balance/tier of phone plan)
     * higher day/night ratio of number of outgoing calls/texts -- play around with bounds for day-time
-    * higher n_times contacted for contacts with multiple phone numbers (== affluent social/professional network?)
+    * higher n_times contacted for contacts with multiple phone numbers (== degree assortativity?)
 
 ## **Data Structure:**
 * user_status.csv
