@@ -59,10 +59,8 @@ setup, examining data files, establishing some workflow
 
 **Surprises**
 
-* transaction success is not positively correlated with defaulting --
-**resolved by better understanding the parsing with a word cloud**
-
-* branch features are quite strongly negatively correlated with status. MPESA is a better financial feature so far.
+* branch features are quite strongly negatively correlated with status.
+MPESA is a better financial feature so far.
 
 **Hypotheses:**
 
