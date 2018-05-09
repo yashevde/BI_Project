@@ -62,6 +62,7 @@ for user in users:
     for user_call_log in user_call_logs:
         try:
             user_calls = pd.read_json(user_call_log)  # ,date_unit='ms' ,keep_default_dates=True
+            # TODO: This is only taking the last log!
         except OverflowError:
             pass
     n_user_calls = len(user_calls)
@@ -77,7 +78,7 @@ for user in users:
         total_talkTime = 0
         avg_talkTime = 0
 
-    # d/n ratio TODO: outgoing vs. incoming?
+    # d/n ratio
     d = 0
     n = 0
     for dt in user_calls['datetime']:
@@ -185,7 +186,6 @@ for user in users:
     expenditures.append(re.findall('Confirmed. Ksh(\d+) sent', text_body))
     expenditures.append(re.findall('Give Ksh(\d+) cash', text_body))
 
-
     for text in texts_list:
         counts.update(word.strip('.,?!"\'').lower() for word in text.split())
     confirmed = counts['confirmed']+counts['confirmed.you']
@@ -195,7 +195,7 @@ for user in users:
     else:
         transaction_success.append((confirmed / (confirmed + failed)) * 100)
 
-    # d/n ratio TODO: outgoing vs. incoming?
+    # d/n ratio
     d = 0
     n = 0
     for dt in user_texts['datetime']:
@@ -221,7 +221,7 @@ for user in users:
     # n contacts
     n_contacts.append(len(user_contacts))
 
-    # TODO: network "richness"
+    # TODO: degree assortativity -- use KNN?
 
 feature_df = pd.DataFrame({'total_talkTime_hrs': total_talkTime, 'avg_talkTime_mins': avg_talkTime,
                            'n_devices': n_devices, 'calls_d/n': call_activity,
@@ -239,5 +239,4 @@ train, test = train_test_split(df, test_size=0.2)
 
 # print(df)
 
-# [degree assortativity, avg. loan amt]
-# sentiment analysis?
+# sentiment analysis from wordcloud script?

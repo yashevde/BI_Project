@@ -10,6 +10,7 @@ https://docs.google.com/document/d/1XgYfGj73pXdhoB0L45cvg357wp81NWqs8fMscOchQCg/
 - [x] make master df. Split 80-20 into train and test.
 - [-] Parse out info from texts -- expand.
 - [] build and compare models, draw inferences
+- [] start to tell the story of the data
 - [] optimize BI_df.py
 - [~] degree assortativity for network
 
@@ -21,7 +22,8 @@ All times in P.T.
 
 * 05/09 15:00 - 16:00
 
-
+regex text parsing, expanding feature space
+noticed major bug in user call concatenation. Fixing.
 
 * 05/08 14:00 - 15:00
 
