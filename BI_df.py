@@ -21,9 +21,13 @@ for root, dirs, _ in os.walk(working_dir):
 users = sorted(users, key=lambda item: int(item.partition('-')[2]))
 
 n_devices = []
-talkTime = []
+total_talkTime = []
+avg_talkTime = []
+data_usage = []
 call_activity = []
 text_activity = []
+n_calls = []
+n_texts = []
 n_contacts = []
 transaction_success = []
 
@@ -45,12 +49,21 @@ for user in users:
 
     for user_call_log in user_call_logs:
         try:
-            user_calls = pd.read_json(user_call_log)  # ,date_unit='ms',keep_default_dates=True
+            user_calls = pd.read_json(user_call_log)  # ,date_unit='ms' ,keep_default_dates=True
         except OverflowError:
             pass
+    n_user_calls = len(user_calls)
+    n_calls.append(n_user_calls)
 
-    # user talktime
-    talkTime.append((user_calls['duration'].sum()) / 3600)
+    # print(user, user_calls.head(5))
+    talkTime = (user_calls['duration'].sum())
+
+    if n_user_calls != 0:
+        total_talkTime.append(round((talkTime / 3600), 2))
+        avg_talkTime.append((round((talkTime / 60), 2)) / n_user_calls)
+    else:
+        total_talkTime = 0
+        avg_talkTime = 0
 
     # d/n ratio TODO: outgoing vs. incoming?
     d = 0
@@ -74,6 +87,7 @@ for user in users:
 
     for user_text_log in user_text_logs:
         user_texts = pd.read_json(user_text_log)
+    n_texts.append(len(user_texts))
 
     # parse
 
@@ -88,11 +102,12 @@ for user in users:
     # print(texts_df)
     # transactional_activity = len(texts_df)
 
+    # quickly scripted a word cloud to get the keywords to count
     texts_list = user_texts['message_body'].tolist()
     for text in texts_list:
         counts.update(word.strip('.,?!"\'').lower() for word in text.split())
-    confirmed = counts['confirmed']
-    failed = counts['failed']
+    confirmed = counts['confirmed']+counts['confirmed.you']
+    failed = counts['failed']+counts['depleted']+counts['finished.dial']
     if failed == 0:
         transaction_success.append(1)
     else:
@@ -109,7 +124,7 @@ for user in users:
             except ValueError:
                 pass
         hr = DON.hour
-        if hr >= 8 and hr < 20:
+        if 8 <= hr < 20:
             d += 1
         else:
             n += 1
@@ -126,9 +141,10 @@ for user in users:
 
     # TODO: network "richness"
 
-feature_df = pd.DataFrame({'talkTime(hrs)': talkTime, 'n_devices': n_devices, 'calls(d/n)': call_activity,
-                   'texts(d/n)': text_activity, 'n_contacts': n_contacts,
-                   'transaction_success': transaction_success})
+feature_df = pd.DataFrame({'total_talkTime_hrs': total_talkTime, 'avg_talkTime_mins': avg_talkTime,
+                           'n_devices': n_devices, 'calls_d/n': call_activity,
+                           'texts_d/n': text_activity, 'n_contacts': n_contacts, 'n_calls': n_calls, 'n_texts': n_texts,
+                           'transaction_success': transaction_success})
 
 status = pd.read_csv('./user_logs_copy/user_status.csv', usecols=['status'])
 status['status'] = status['status'].map({'repaid': 1, 'defaulted': 0})
@@ -139,3 +155,4 @@ train, test = train_test_split(df, test_size=0.2)
 print(df)
 
 # [richness, avg MPESA balance, avg. loan amt]
+# sentiment analysis?

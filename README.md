@@ -8,7 +8,7 @@ https://docs.google.com/document/d/1XgYfGj73pXdhoB0L45cvg357wp81NWqs8fMscOchQCg/
 - [x] feature engineering from parameters
 - [x] Datetime handling for call and sms logs
 - [~] "network affluence" (number of calls to people with multiple lines i.e. more buying power/enterprise)
-- [-] Parse out info from texts -- more: get MPESA Avg. Balance at least
+- [-] Parse out info from texts -- expand.
 - [x] make master df. Split 80-20 into train and test.
 - [] build and compare models, draw inferences
 - [] optimize BI_df.py to show some infrastructure swag
@@ -17,7 +17,11 @@ https://docs.google.com/document/d/1XgYfGj73pXdhoB0L45cvg357wp81NWqs8fMscOchQCg/
 this will be useful in case I close the google doc while working on it, or keep it open while not.
 All times in P.T.
 
-**running total: 4.5hrs**
+**in progress**
+
+* 05/09 15:00 - 16:00
+
+
 
 * 05/08 14:00 - 15:00
 
@@ -50,6 +54,11 @@ setup, examining data files, establishing some workflow
 
 * Correlations aren't too strong, which indicates good feature engineering. even and non-overlapping info content across the board.
 
+**Surprises**
+
+* transaction success is not positively correlated with defaulting --
+**resolved by better understanding the parsing with a word cloud**
+
 **Hypotheses:**
 
 * potential positively correlated variables to repayment:
@@ -61,7 +70,7 @@ setup, examining data files, establishing some workflow
     * number of devices
     * number of contacts
     * total talk-time (collated_call_log.txt/"duration"--indicates high talk-time balance/tier of phone plan)
-    * higher day/night ratio of number of outgoing calls/texts
+    * higher day/night ratio of number of outgoing calls/texts -- play around with bounds for day-time
     * higher n_times contacted for contacts with multiple phone numbers (== affluent social/professional network?)
 
 ## **Data Structure:**
