@@ -23,6 +23,7 @@ All times in P.T.
 * 05/09 15:00 - 16:00
 
 regex text parsing, expanding feature space
+
 noticed major bug in user call concatenation. Fixing.
 
 * 05/08 14:00 - 15:00
