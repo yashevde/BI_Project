@@ -34,20 +34,20 @@ text_activity = []
 
 transaction_success = []
 
-mpesa_min = []
+# mpesa_min = []
 mpesa_max = []
 mpesa_avg = []
 mpesa_limit = []
 
-mshwari_min = []
+# mshwari_min = []
 mshwari_max = []
 mshwari_avg = []
 
-#make this sadness functional
+# make this sadness functional
 n_mshwari_loans = []
 avg_mshwari_loan = []
 max_mshwari_loan = []
-min_mshwari_loan = []
+# min_mshwari_loan = []
 total_mshwari_loans = []
 
 n_branch_loans = []
@@ -55,6 +55,8 @@ branch_loan_min = []
 branch_loan_max = []
 branch_loan_avg = []
 branch_inst_avg = []
+
+mshwari_competition = []
 
 n_expenditures = []
 avg_expenditure = []
@@ -71,7 +73,6 @@ total_income = []
 burn_rate = []
 
 for user in users:
-    # n_devices.append(len(next(os.walk(working_dir + '/' + user))[1]))
 
     user_call_logs = []
     user_text_logs = []
@@ -117,7 +118,7 @@ for user in users:
             except ValueError:
                 pass
         hr = DON.hour
-        if 8 <= hr <= 20:
+        if 8 <= hr <= 23:
             d += 1
         else:
             n += 1
@@ -139,11 +140,11 @@ for user in users:
     user_mpesa_bal = list(map(int, list(itertools.chain.from_iterable(list(filter(None, user_mpesa_bal))))))
 
     if user_mpesa_bal:
-        mpesa_min.append(min(user_mpesa_bal))
+        # mpesa_min.append(min(user_mpesa_bal))
         mpesa_max.append(max(user_mpesa_bal))
         mpesa_avg.append(np.mean(user_mpesa_bal))
     else:
-        mpesa_min.append(0)
+        # mpesa_min.append(0)
         mpesa_max.append(0)
         mpesa_avg.append(0)
 
@@ -151,12 +152,12 @@ for user in users:
     user_mshwari_bal = list(map(int, list(itertools.chain.from_iterable(list(filter(None, user_mshwari_bal))))))
 
     if user_mshwari_bal:
-        mshwari_min.append(min(user_mshwari_bal))
+        # mshwari_min.append(min(user_mshwari_bal))
         mshwari_max.append(max(user_mshwari_bal))
         mshwari_avg.append(round((np.mean(user_mshwari_bal)), 2))
 
     else:
-        mshwari_min.append(0)
+        # mshwari_min.append(0)
         mshwari_max.append(0)
         mshwari_avg.append(0)
 
@@ -171,8 +172,10 @@ for user in users:
     branch_loan_amt = [re.findall(r'branch loan of ksh (\d+)', texts_list)]
     branch_loan_amt = list(map(int, list(itertools.chain.from_iterable(list(filter(None, branch_loan_amt))))))
 
+    n_branch = len(branch_loan_amt)
+
     if branch_loan_amt:
-        n_branch_loans.append(len(branch_loan_amt))
+        n_branch_loans.append(n_branch)
         branch_loan_min.append(min(branch_loan_amt))
         branch_loan_max.append(max(branch_loan_amt))
         branch_loan_avg.append(round((np.mean(branch_loan_amt)), 2))
@@ -223,19 +226,26 @@ for user in users:
     mshwari_loans_due = [re.findall(r'loan of ksh(\d+)', texts_list)]
     mshwari_loans_due = list(map(int, list(itertools.chain.from_iterable(list(filter(None, mshwari_loans_due))))))
 
+    n_mshwari = len(mshwari_loans_due)
+
     if mshwari_loans_due:
-        n_mshwari_loans.append(len(mshwari_loans_due))
+        n_mshwari_loans.append(n_mshwari)
         avg_mshwari_loan.append(np.mean(mshwari_loans_due))
         max_mshwari_loan.append(max(mshwari_loans_due))
-        min_mshwari_loan.append(min(mshwari_loans_due))
+        # min_mshwari_loan.append(min(mshwari_loans_due))
         total_mshwari_loans.append(sum(mshwari_loans_due))
 
     else:
         n_mshwari_loans.append(0)
         avg_mshwari_loan.append(0)
         max_mshwari_loan.append(0)
-        min_mshwari_loan.append(0)
+        # min_mshwari_loan.append(0)
         total_mshwari_loans.append(0)
+
+    if n_branch != 0:
+        mshwari_competition.append(n_mshwari / n_branch)
+    else:
+        mshwari_competition.append(0)
 
     branch_installment = [re.findall(r'branch repayment of ksh (\d+)', texts_list)]
     branch_installment = list(map(int, list(itertools.chain.from_iterable(list(filter(None, branch_installment))))))
@@ -245,7 +255,7 @@ for user in users:
     else:
         branch_inst_avg.append(0)
 
-    user_mshwari_trans = [re.findall(r'you have transferred ksh(\d+)', texts_list)]  #TODO
+    user_mshwari_trans = [re.findall(r'you have transferred ksh(\d+)', texts_list)]  # TODO
 
     counts.update(word.strip('.,?!"\'') for word in texts_list.split())
     confirmed = counts['confirmed'] + counts['confirmed.you']
@@ -256,7 +266,7 @@ for user in users:
         transaction_success.append((confirmed / (confirmed + failed)) * 100)
 
     if sum_income != 0 and sum_expenditure != 0:
-        burn_rate.append(sum_expenditure/sum_income)
+        burn_rate.append(sum_expenditure / sum_income)
     if sum_income == 0 and sum_expenditure != 0:
         burn_rate.append(1)
     if (sum_income != 0 and sum_expenditure == 0) or (sum_income == 0 and sum_expenditure == 0):
@@ -273,7 +283,7 @@ for user in users:
             except ValueError:
                 pass
         hr = DON.hour
-        if 8 <= hr <= 20:
+        if 8 <= hr <= 23:
             d += 1
         else:
             n += 1
@@ -290,23 +300,25 @@ for user in users:
 
     # TODO: degree assortativity -- use KNN?
 
-#print("ayy")
+# print("ayy")
 feature_df = pd.DataFrame({'total_talkTime_hrs': total_talkTime, 'avg_talkTime_mins': avg_talkTime,
                            'n_devices': n_devices, 'calls_d/n': call_activity,
                            'texts_d/n': text_activity, 'n_contacts': n_contacts, 'n_calls': n_calls, 'n_texts': n_texts,
-                           'transaction_success': transaction_success, 'mpesa_min': mpesa_min,
-                           'mpesa_max': mpesa_max, 'mpesa_avg': mpesa_avg, 'mshwari_min': mshwari_min,
+                           'transaction_success': transaction_success,
+                           'mpesa_max': mpesa_max, 'mpesa_avg': mpesa_avg,
                            'mshwari_max': mshwari_max, 'mshwari_avg': mshwari_avg, 'n_mshwari_loans': n_mshwari_loans,
                            'avg_mshwari_loan': avg_mshwari_loan, 'max_mshwari_loan': max_mshwari_loan,
-                           'min_mshwari_loan': min_mshwari_loan, 'total_mshwari_loans': total_mshwari_loans,
+                           'total_mshwari_loans': total_mshwari_loans,
                            'mpesa_limit': mpesa_limit, 'n_branch_loans': n_branch_loans,
                            'branch_min': branch_loan_min, 'branch_max': branch_loan_max, 'branch_avg': branch_loan_avg,
                            'branch_inst_avg': branch_inst_avg, 'n_expenditures': n_expenditures,
                            'avg_expenditure': avg_expenditure, 'max_expenditure': max_expenditure,
                            'min_expenditure': min_expenditure, 'total_expenditure': total_expenditure,
-                           'n_incomes': n_incomes,
+                           'n_incomes': n_incomes, 'mshwari_competition': mshwari_competition,
                            'avg_incoming': avg_incoming, 'max_incoming': max_incoming, 'min_incoming': min_incoming,
                            'total_income': total_income, 'burn_rate': burn_rate})
+
+# 'mshwari_min': mshwari_min, 'mpesa_min': mpesa_min, min_mshwari_loan': min_mshwari_loan,
 
 status = pd.read_csv('./user_logs_copy/user_status.csv', usecols=['status'])
 status['status'] = status['status'].map({'repaid': 1, 'defaulted': 0})
@@ -314,7 +326,7 @@ df = pd.concat([feature_df, status], axis=1)
 
 train, test = train_test_split(df, test_size=0.2)
 
-#print(df.head(10))
+# print(df.head(10))
 
 # sentiment analysis from wordcloud script?
 # make regex functional?
