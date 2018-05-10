@@ -8,23 +8,27 @@ https://docs.google.com/document/d/1XgYfGj73pXdhoB0L45cvg357wp81NWqs8fMscOchQCg/
 - [x] feature engineering from parameters
 - [x] Datetime handling for call and sms logs
 - [x] make master df. Split 80-20 into train and test.
-- [-] Parse out info from texts -- expand.
-- [] build and compare models, draw inferences
-- [] start to tell the story of the data
+- [x] Parse out info from texts -- expand feature space
+- [x] build and compare models, draw inferences
+- [-] start to tell the story of the data
 - [] optimize BI_df.py
 - [~] degree assortativity for network
 
-## Active time log:
+## Work Log:
 this will be useful in case I close the google doc while working on it, or keep it open while not.
 All times in P.T.
 
 **in progress**
 
+* 05/10 06:45 - 7:30
+
+model building and conceptual analysis.
+
 * 05/09 15:00 - 16:00
 
 regex text parsing, expanding feature space
 
-noticed major bug in user call concatenation. Fixing.
+noticed major bug in user call log concatenation
 
 * 05/08 14:00 - 15:00
 
@@ -35,6 +39,7 @@ started prototyping for modeling with a basic skeleton for regression
 * 05/07 16:00-17:00
 
 error handling, talktime, call activity, n_contacts
+
 resolving issues in assembling text for parsing: https://stackoverflow.com/a/46721064/8259724
 
 beginning final df assembly
@@ -59,22 +64,8 @@ setup, examining data files, establishing some workflow
 
 **Surprises**
 
-* branch features are quite strongly negatively correlated with status.
-MPESA is a better financial feature so far.
-
-**Hypotheses:**
-
-* potential positively correlated variables to repayment:
-    * number of 'transactional' texts (safaricom, mpesa, branch, mshwari)
-        * safaricom: fewer "depleted", "almost finished"
-        * M-PESA: : low(n_"failed"/n_"confirmed"), higher balance average ("account balance is")
-        * M-Shwari: loan amount
-        * Branch-co: fewer loans and lower "Your branch loan of" average
-    * number of devices
-    * number of contacts
-    * total talk-time (collated_call_log.txt/"duration"--indicates high talk-time balance/tier of phone plan)
-    * higher day/night ratio of number of outgoing calls/texts -- play around with bounds for day-time
-    * higher n_times contacted for contacts with multiple phone numbers (== degree assortativity?)
+* n_texts and n_devices are not correlated too strongly. I assumed that
+more phones == more spam texts.
 
 ## **Data Structure:**
 * user_status.csv
@@ -102,3 +93,16 @@ MPESA is a better financial feature so far.
     * n phone numbers per contact
     * times contacted
 
+**Hypotheses:**
+
+* potential positively correlated variables to repayment:
+    * number of 'transactional' texts (safaricom, mpesa, branch, mshwari)
+        * safaricom: fewer "depleted", "almost finished"
+        * M-PESA: : low(n_"failed"/n_"confirmed"), higher balance average ("account balance is")
+        * M-Shwari: loan amount
+        * Branch-co: fewer loans and lower "Your branch loan of" average
+    * number of devices
+    * number of contacts
+    * total talk-time (collated_call_log.txt/"duration"--indicates high talk-time balance/tier of phone plan)
+    * higher day/night ratio of number of outgoing calls/texts -- play around with bounds for day-time
+    * higher n_times contacted for contacts with multiple phone numbers (== degree assortativity?)
