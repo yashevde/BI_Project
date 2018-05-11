@@ -12,7 +12,7 @@ import itertools
 
 counts = Counter()
 
-working_dir = './user_logs_copy'
+working_dir = './user_logs'
 
 users = []
 for root, dirs, _ in os.walk(working_dir):
@@ -43,7 +43,6 @@ mpesa_limit = []
 mshwari_max = []
 mshwari_avg = []
 
-# make this sadness functional
 n_mshwari_loans = []
 avg_mshwari_loan = []
 max_mshwari_loan = []
@@ -56,7 +55,7 @@ branch_loan_max = []
 branch_loan_avg = []
 branch_inst_avg = []
 
-mshwari_competition = []
+competition = []
 
 n_expenditures = []
 avg_expenditure = []
@@ -89,10 +88,10 @@ for user in users:
 
     for user_call_log in user_call_logs:
         try:
-            user_calls = pd.read_json(user_call_log)  # ,date_unit='ms' ,keep_default_dates=True
-            # TODO: This is only taking the last log!
+            user_calls = pd.read_json(user_call_log)
         except OverflowError:
             pass
+
     n_user_calls = len(user_calls)
     n_calls.append(n_user_calls)
 
@@ -129,12 +128,12 @@ for user in users:
 
     for user_text_log in user_text_logs:
         user_texts = pd.read_json(user_text_log)
+
     n_texts.append(len(user_texts))
 
     # parse
     texts_list = user_texts['message_body'].tolist()
     texts_list = ''.join(texts_list).lower()
-    # quickly scripted a word cloud to get the keywords to count
 
     user_mpesa_bal = [re.findall(r'm-pesa balance is ksh(\d+)', texts_list)]
     user_mpesa_bal = list(map(int, list(itertools.chain.from_iterable(list(filter(None, user_mpesa_bal))))))
@@ -232,20 +231,18 @@ for user in users:
         n_mshwari_loans.append(n_mshwari)
         avg_mshwari_loan.append(np.mean(mshwari_loans_due))
         max_mshwari_loan.append(max(mshwari_loans_due))
-        # min_mshwari_loan.append(min(mshwari_loans_due))
         total_mshwari_loans.append(sum(mshwari_loans_due))
 
     else:
         n_mshwari_loans.append(0)
         avg_mshwari_loan.append(0)
         max_mshwari_loan.append(0)
-        # min_mshwari_loan.append(0)
         total_mshwari_loans.append(0)
 
     if n_branch != 0:
-        mshwari_competition.append(n_mshwari / n_branch)
+        competition.append(n_mshwari / n_branch)
     else:
-        mshwari_competition.append(0)
+        competition.append(1)
 
     branch_installment = [re.findall(r'branch repayment of ksh (\d+)', texts_list)]
     branch_installment = list(map(int, list(itertools.chain.from_iterable(list(filter(None, branch_installment))))))
@@ -254,8 +251,6 @@ for user in users:
         branch_inst_avg.append(round((np.mean(branch_installment)), 2))
     else:
         branch_inst_avg.append(0)
-
-    user_mshwari_trans = [re.findall(r'you have transferred ksh(\d+)', texts_list)]  # TODO
 
     counts.update(word.strip('.,?!"\'') for word in texts_list.split())
     confirmed = counts['confirmed'] + counts['confirmed.you']
@@ -300,25 +295,23 @@ for user in users:
 
     # TODO: degree assortativity -- use KNN?
 
-# print("ayy")
-feature_df = pd.DataFrame({'total_talkTime_hrs': total_talkTime, 'avg_talkTime_mins': avg_talkTime,
-                           'n_devices': n_devices, 'calls_d/n': call_activity,
-                           'texts_d/n': text_activity, 'n_contacts': n_contacts, 'n_calls': n_calls, 'n_texts': n_texts,
-                           'transaction_success': transaction_success,
-                           'mpesa_max': mpesa_max, 'mpesa_avg': mpesa_avg,
-                           'mshwari_max': mshwari_max, 'mshwari_avg': mshwari_avg, 'n_mshwari_loans': n_mshwari_loans,
-                           'avg_mshwari_loan': avg_mshwari_loan, 'max_mshwari_loan': max_mshwari_loan,
-                           'total_mshwari_loans': total_mshwari_loans,
-                           'mpesa_limit': mpesa_limit, 'n_branch_loans': n_branch_loans,
-                           'branch_min': branch_loan_min, 'branch_max': branch_loan_max, 'branch_avg': branch_loan_avg,
-                           'branch_inst_avg': branch_inst_avg, 'n_expenditures': n_expenditures,
-                           'avg_expenditure': avg_expenditure, 'max_expenditure': max_expenditure,
-                           'min_expenditure': min_expenditure, 'total_expenditure': total_expenditure,
-                           'n_incomes': n_incomes, 'mshwari_competition': mshwari_competition,
-                           'avg_incoming': avg_incoming, 'max_incoming': max_incoming, 'min_incoming': min_incoming,
-                           'total_income': total_income, 'burn_rate': burn_rate})
-
-# 'mshwari_min': mshwari_min, 'mpesa_min': mpesa_min, min_mshwari_loan': min_mshwari_loan,
+feature_df = pd.DataFrame({'Total TalkTime (hrs)': total_talkTime, 'Average TalkTime (mins)': avg_talkTime,
+                           '#Devices': n_devices, 'Day/Night Call ratio': call_activity,
+                           'Day/Night Text ratio': text_activity, '#Contacts': n_contacts, '#Calls': n_calls,
+                           '#Texts': n_texts,
+                           '%Successful Transactions': transaction_success,
+                           'Max MPESA Balance': mpesa_max, 'Avg MPESA Balance': mpesa_avg,
+                           'Max MSHWARI Balance': mshwari_max, 'Avg MSHWARI Balance': mshwari_avg, '#MSHWARI Loans': n_mshwari_loans,
+                           'Avg MSHWARI Loan': avg_mshwari_loan, 'Max MSHWARI Loan': max_mshwari_loan,
+                           'Total MSHWARI Loans': total_mshwari_loans,
+                           'MPESA Limit': mpesa_limit, '#Branch Loans': n_branch_loans,
+                           'Min Branch Loan': branch_loan_min, 'Max Branch Loan': branch_loan_max, 'Avg Branch Loan': branch_loan_avg,
+                           'Avg Branch Installment': branch_inst_avg, '#Expenditures': n_expenditures,
+                           'Avg Expenditure': avg_expenditure, 'Max Expenditure': max_expenditure,
+                           'Min Expenditure': min_expenditure, 'Total Expenditure': total_expenditure,
+                           '#Incoming Amts': n_incomes, 'Competition': competition,
+                           'Avg Incoming Amt': avg_incoming, 'Max Incoming Amt': max_incoming, 'Min Incoming Amt': min_incoming,
+                           'Total Income': total_income, 'Burn Rate': burn_rate})
 
 status = pd.read_csv('./user_logs_copy/user_status.csv', usecols=['status'])
 status['status'] = status['status'].map({'repaid': 1, 'defaulted': 0})
@@ -326,7 +319,5 @@ df = pd.concat([feature_df, status], axis=1)
 
 train, test = train_test_split(df, test_size=0.2)
 
-# print(df.head(10))
+print(df.head(5))
 
-# sentiment analysis from wordcloud script?
-# make regex functional?
