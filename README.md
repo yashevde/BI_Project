@@ -1,7 +1,5 @@
 # BI_Project
 ## Yash Shevde
-Instructions and Q&A:
-https://docs.google.com/document/d/1XgYfGj73pXdhoB0L45cvg357wp81NWqs8fMscOchQCg/edit
 
 ## **Steps:**
 - [x] import csv and txts into pd.Dataframe. merge across devices; index by user.
